@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Луиза — AI Creative &amp; Visual Content</title>
+<meta name="description" content="Луиза — AI-креатор. Рекламные ролики, виртуальные модели, каталожные съёмки и визуальные концепции для брендов.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23171410%22/><text x=%2250%22 y=%2268%22 font-size=%2260%22 fill=%22%23E9E6DF%22 text-anchor=%22middle%22 font-family=%22serif%22>L</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,450&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#E9E6DF;
+    --bg-alt:#DEDACF;
+    --panel:#F4F2EC;
+    --ink:#171410;
+    --ink-soft:#59524A;
+    --ink-faint:#8B8377;
+    --accent:#7A1428;
+    --accent-ink:#F4E9D8;
+    --gold:#B8944F;
+    --line:rgba(23,20,16,0.14);
+    --line-strong:rgba(23,20,16,0.28);
+    --radius:2px;
+    --wrap:1240px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-size:16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+  }
+
+  /* subtle paper grain */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    pointer-events:none;
+    z-index:2;
+    opacity:0.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode:multiply;
+  }
+
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  ul{margin:0; padding:0; list-style:none;}
+  button{font-family:inherit; cursor:pointer;}
+
+  .wrap{max-width:var(--wrap); margin:0 auto; padding:0 40px;}
+  @media (max-width:720px){ .wrap{padding:0 20px;} }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px; height:1px;
+    background:var(--accent);
+    display:inline-block;
+  }
+
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    font-weight:450;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+
+  section{position:relative; z-index:1;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(233,230,223,0.86);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    height:76px;
+  }
+  .logo{
+    font-family:'Fraunces', serif;
+    font-size:22px;
+    display:flex; align-items:baseline; gap:10px;
+  }
+  .logo span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+  }
+  nav.main-links{
+    display:flex; align-items:center; gap:34px;
+  }
+  nav.main-links a{
+    font-size:14px;
+    color:var(--ink-soft);
+    position:relative;
+    padding:4px 0;
+    transition:color .25s var(--ease);
+  }
+  nav.main-links a:hover{color:var(--ink);}
+  nav.main-links a::after{
+    content:"";
+    position:absolute; left:0; bottom:0;
+    width:0; height:1px;
+    background:var(--accent);
+    transition:width .3s var(--ease);
+  }
+  nav.main-links a:hover::after{width:100%;}
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; font-weight:500;
+    letter-spacing:0.02em;
+    padding:13px 24px;
+    border-radius:var(--radius);
+    border:1px solid var(--ink);
+    transition:all .25s var(--ease);
+  }
+  .btn-solid{background:var(--ink); color:var(--bg);}
+  .btn-solid:hover{background:var(--accent); border-color:var(--accent); color:var(--accent-ink);}
+  .btn-outline{background:transparent; color:var(--ink); border-color:var(--line-strong);}
+  .btn-outline:hover{border-color:var(--ink); background:var(--ink); color:var(--bg);}
+  .btn-accent{background:var(--accent); color:var(--accent-ink); border-color:var(--accent);}
+  .btn-accent:hover{background:var(--ink); border-color:var(--ink);}
+
+  .burger{
+    display:none;
+    flex-direction:column; gap:5px;
+    background:none; border:none; padding:6px;
+  }
+  .burger span{width:24px; height:1.5px; background:var(--ink); display:block;}
+
+  .mobile-menu{
+    display:none;
+    position:fixed; inset:76px 0 0 0;
+    background:var(--bg);
+    z-index:49;
+    padding:30px 20px;
+    flex-direction:column;
+    gap:2px;
+    overflow-y:auto;
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{
+    font-family:'Fraunces', serif;
+    font-size:28px;
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .mobile-menu .btn{margin-top:20px; justify-content:center;}
+
+  @media (max-width:900px){
+    nav.main-links{display:none;}
+    header .btn-solid.desktop-only{display:none;}
+    .burger{display:flex;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:90px 0 70px;
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:60px;
+    align-items:center;
+  }
+  .hero-name{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:22px;
+  }
+  .hero h1{
+    font-size:clamp(38px, 5vw, 64px);
+    line-height:1.04;
+    font-weight:450;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--accent);
+  }
+  .hero p{
+    margin:26px 0 34px;
+    max-width:460px;
+    color:var(--ink-soft);
+    font-size:17px;
+    line-height:1.6;
+  }
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
+
+  .hero-visual{
+    position:relative;
+    aspect-ratio:4/5;
+    border-radius:var(--radius);
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 30% 20%, #A0374A 0%, transparent 55%),
+      radial-gradient(circle at 75% 70%, #3B3A63 0%, transparent 50%),
+      linear-gradient(160deg, #221E1A, #171410 70%);
+  }
+  .hero-visual .frame-label{
+    position:absolute; top:18px; left:18px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:rgba(244,233,216,0.7);
+    text-transform:uppercase;
+    border:1px solid rgba(244,233,216,0.25);
+    padding:5px 10px;
+  }
+  .hero-visual .reel-caption{
+    position:absolute; bottom:0; left:0; right:0;
+    padding:18px 20px 20px;
+    background:linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+    color:var(--accent-ink);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.04em;
+    display:flex; justify-content:space-between;
+  }
+  .hero-visual .reel-mark{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:15vw;
+    color:rgba(244,233,216,0.08);
+    line-height:1;
+    pointer-events:none;
+  }
+
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr; padding-top:50px;}
+    .hero-visual{aspect-ratio:16/11;}
+  }
+
+  /* ---------- POSITIONING ---------- */
+  .positioning{
+    background:var(--panel);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:90px 0;
+  }
+  .positioning-head{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:50px;
+    margin-bottom:60px;
+  }
+  .positioning-head h2{font-size:clamp(28px,3.4vw,40px);}
+  .positioning-head p{color:var(--ink-soft); font-size:16px; line-height:1.7; margin-top:18px;}
+
+  .adv-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .adv-card{
+    background:var(--panel);
+    padding:36px 32px;
+  }
+  .adv-card .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--accent);
+    letter-spacing:0.1em;
+  }
+  .adv-card h3{font-size:20px; margin-top:16px; font-weight:600; font-family:'Inter',sans-serif;}
+  .adv-card p{color:var(--ink-soft); font-size:14.5px; margin-top:10px; line-height:1.6;}
+
+  @media (max-width:900px){
+    .positioning-head{grid-template-columns:1fr;}
+    .adv-grid{grid-template-columns:1fr;}
+  }
+
+  /* ---------- SECTION HEADS ---------- */
+  .section-pad{padding:100px 0;}
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap:30px; margin-bottom:50px; flex-wrap:wrap;
+  }
+  .section-head h2{font-size:clamp(30px,3.6vw,44px); max-width:600px;}
+  .section-head .sub{color:var(--ink-soft); max-width:360px; font-size:15px; line-height:1.6;}
+
+  /* ---------- SERVICES ---------- */
+  .services-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--line-strong);
+    border:1px solid var(--line-strong);
+  }
+  .service-card{
+    background:var(--bg);
+    padding:34px 30px 30px;
+    display:flex; flex-direction:column;
+    min-height:300px;
+    transition:background .3s var(--ease);
+  }
+  .service-card:hover{background:var(--panel);}
+  .service-card .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.08em;
+    color:var(--ink-faint); text-transform:uppercase;
+  }
+  .service-card h3{font-size:21px; margin-top:14px; line-height:1.2;}
+  .service-card ul{margin-top:16px; flex:1;}
+  .service-card li{
+    font-size:13.5px; color:var(--ink-soft);
+    padding:6px 0 6px 16px; position:relative;
+    border-top:1px solid var(--line);
+  }
+  .service-card li:first-child{border-top:none;}
+  .service-card li::before{
+    content:"—"; position:absolute; left:0; color:var(--ink-faint);
+  }
+  .service-card .link{
+    margin-top:22px; font-size:13px; font-weight:500;
+    display:inline-flex; align-items:center; gap:6px;
+    color:var(--accent);
+  }
+  .service-card .link::after{content:"→"; transition:transform .25s var(--ease);}
+  .service-card:hover .link::after{transform:translateX(4px);}
+
+  @media (max-width:900px){ .services-grid{grid-template-columns:1fr;} }
+
+  /* ---------- CASES INDEX (signature element) ---------- */
+  .cases{background:var(--ink); color:var(--bg);}
+  .cases .section-head h2{color:var(--bg);}
+  .cases .section-head .sub{color:rgba(233,230,223,0.6);}
+  .cases .eyebrow{color:var(--gold);}
+  .cases .eyebrow::before{background:var(--gold);}
+
+  .case-list{border-top:1px solid rgba(233,230,223,0.18);}
+  .case-row{
+    display:grid;
+    grid-template-columns:60px 1.4fr 1fr 1fr 130px;
+    align-items:center;
+    gap:24px;
+    padding:26px 4px;
+    border-bottom:1px solid rgba(233,230,223,0.18);
+    cursor:pointer;
+    position:relative;
+    transition:padding-left .3s var(--ease);
+  }
+  .case-row:hover{padding-left:16px;}
+  .case-row .idx{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--gold); font-size:13px;
+  }
+  .case-row h3{
+    font-size:clamp(19px,2.2vw,26px);
+    font-weight:450;
+    transition:color .25s;
+  }
+  .case-row:hover h3{color:var(--gold);}
+  .case-row .client{font-size:13.5px; color:rgba(233,230,223,0.6);}
+  .case-row .cat{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px; letter-spacing:0.05em;
+    color:rgba(233,230,223,0.55); text-transform:uppercase;
+  }
+  .case-row .open{
+    justify-self:end;
+    font-size:12.5px;
+    display:flex; align-items:center; gap:8px;
+    color:rgba(233,230,223,0.8);
+  }
+  .case-row .open::after{content:"↗"; font-size:14px;}
+
+  .case-cover-preview{
+    position:absolute;
+    right:150px; top:50%;
+    transform:translateY(-50%) scale(0.9);
+    width:150px; height:100px;
+    border-radius:2px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s var(--ease), transform .25s var(--ease);
+    z-index:2;
+  }
+  .case-row:hover .case-cover-preview{opacity:1; transform:translateY(-50%) scale(1);}
+
+  @media (max-width:900px){
+    .case-row{grid-template-columns:34px 1fr; grid-template-rows:auto auto; row-gap:6px;}
+    .case-row .client, .case-row .cat{grid-column:2;}
+    .case-row .open{display:none;}
+    .case-cover-preview{display:none;}
+  }
+
+  .experimental-note{
+    margin-top:40px; padding-top:30px;
+    border-top:1px dashed rgba(233,230,223,0.25);
+    font-size:14px; color:rgba(233,230,223,0.55);
+    display:flex; gap:16px; align-items:baseline; flex-wrap:wrap;
+  }
+  .experimental-note strong{color:var(--bg); font-family:'Fraunces',serif; font-weight:450; font-size:17px;}
+
+  /* ---------- ABOUT ---------- */
+  .about{
+    display:grid;
+    grid-template-columns:0.85fr 1.15fr;
+    gap:70px;
+    align-items:start;
+  }
+  .about-photo{
+    aspect-ratio:3/4;
+    border-radius:var(--radius);
+    background:linear-gradient(155deg,#DCD3C2,#B9AE97 60%, #171410);
+    position:relative;
+    overflow:hidden;
+  }
+  .about-photo .cap{
+    position:absolute; bottom:16px; left:16px; right:16px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px; color:rgba(23,20,16,0.55);
+    letter-spacing:0.04em;
+  }
+  .about-text p{color:var(--ink-soft); font-size:16.5px; line-height:1.75; margin:0 0 18px;}
+  .about-facts{
+    margin-top:30px; display:flex; flex-wrap:wrap; gap:10px;
+  }
+  .about-facts span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.03em;
+    border:1px solid var(--line-strong);
+    padding:8px 14px; border-radius:20px;
+    color:var(--ink-soft);
+  }
+
+  .why-grid{
+    margin-top:70px;
+    display:grid; grid-template-columns:repeat(5,1fr); gap:24px;
+  }
+  .why-card{padding-top:20px; border-top:1px solid var(--line-strong);}
+  .why-card h4{font-size:16.5px; font-family:'Inter',sans-serif; font-weight:600; line-height:1.3;}
+  .why-card p{font-size:13.5px; color:var(--ink-soft); margin-top:10px; line-height:1.6;}
+
+  @media (max-width:1000px){
+    .about{grid-template-columns:1fr;}
+    .why-grid{grid-template-columns:repeat(2,1fr);}
+  }
+
+  /* ---------- PROCESS ---------- */
+  .process{background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .process-list{counter-reset:step;}
+  .process-item{
+    display:grid;
+    grid-template-columns:90px 1fr;
+    gap:30px;
+    padding:32px 0;
+    border-top:1px solid var(--line);
+  }
+  .process-item:last-child{border-bottom:1px solid var(--line);}
+  .process-item .step{
+    font-family:'Fraunces', serif; font-style:italic;
+    font-size:34px; color:var(--ink-faint);
+  }
+  .process-item h3{font-size:21px; font-weight:500; font-family:'Inter',sans-serif;}
+  .process-item p{color:var(--ink-soft); margin-top:8px; font-size:15px; max-width:640px; line-height:1.65;}
+  .process-note{
+    margin-top:26px; font-size:13.5px; color:var(--ink-faint); font-style:italic;
+  }
+
+  /* ---------- FORMATS ---------- */
+  .formats-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  .format-card{
+    border:1px solid var(--line-strong);
+    padding:32px 28px;
+    display:flex; flex-direction:column; gap:14px;
+    background:var(--bg);
+  }
+  .format-card h3{font-size:22px;}
+  .format-card p{color:var(--ink-soft); font-size:14.5px; line-height:1.6; flex:1;}
+  .formats-cta{text-align:center; margin-top:44px;}
+  @media (max-width:900px){.formats-grid{grid-template-columns:1fr;}}
+
+  /* ---------- TESTIMONIALS (hidden until real reviews exist) ---------- */
+  .testimonials{display:none;}
+
+  /* ---------- FAQ ---------- */
+  .faq-list{border-top:1px solid var(--line-strong); max-width:820px;}
+  .faq-item{border-bottom:1px solid var(--line-strong);}
+  .faq-q{
+    width:100%; text-align:left;
+    background:none; border:none;
+    padding:26px 0; display:flex; justify-content:space-between; align-items:center;
+    gap:20px;
+  }
+  .faq-q h3{font-size:18px; font-weight:500; font-family:'Inter',sans-serif;}
+  .faq-q .plus{font-family:'JetBrains Mono',monospace; font-size:20px; color:var(--accent); transition:transform .3s var(--ease); flex-shrink:0;}
+  .faq-item.open .faq-q .plus{transform:rotate(45deg);}
+  .faq-a{
+    max-height:0; overflow:hidden;
+    transition:max-height .35s var(--ease);
+  }
+  .faq-a p{color:var(--ink-soft); font-size:15px; line-height:1.65; padding-bottom:26px; max-width:680px;}
+
+  /* ---------- FINAL CTA ---------- */
+  .final-cta{
+    background:var(--accent); color:var(--accent-ink);
+    padding:110px 0; text-align:center;
+  }
+  .final-cta h2{
+    font-size:clamp(30px,4.6vw,54px); max-width:800px; margin:0 auto;
+    color:var(--accent-ink); line-height:1.12;
+  }
+  .final-cta p{margin:24px auto 40px; max-width:480px; opacity:0.85; font-size:16px;}
+  .final-links{display:flex; gap:16px; justify-content:center; flex-wrap:wrap;}
+  .final-cta .btn-outline{border-color:rgba(244,233,216,0.4); color:var(--accent-ink);}
+  .final-cta .btn-outline:hover{background:var(--accent-ink); color:var(--ink); border-color:var(--accent-ink);}
+  .final-cta .btn-solid{background:var(--accent-ink); color:var(--accent); border-color:var(--accent-ink);}
+  .final-cta .btn-solid:hover{background:var(--ink); color:var(--accent-ink); border-color:var(--ink);}
+
+  /* ---------- CONTACTS + FORM ---------- */
+  .contact-grid{
+    display:grid; grid-template-columns:0.9fr 1.1fr; gap:70px;
+  }
+  .contact-info h2{font-size:clamp(28px,3.2vw,38px);}
+  .contact-info .name-role{margin-top:22px;}
+  .contact-info .name-role .n{font-family:'Fraunces',serif; font-size:24px;}
+  .contact-info .name-role .r{color:var(--ink-soft); font-size:14px; margin-top:4px;}
+  .contact-list{margin-top:30px;}
+  .contact-list li{
+    padding:14px 0; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; font-size:14.5px;
+  }
+  .contact-list li span:first-child{color:var(--ink-faint); font-family:'JetBrains Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:0.05em;}
+  .contact-tagline{
+    margin-top:28px; padding:20px; background:var(--panel); border-left:2px solid var(--accent);
+    font-size:14px; color:var(--ink-soft); line-height:1.6;
+  }
+
+  form.apply{display:flex; flex-direction:column; gap:18px;}
+  .form-row{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  .field{display:flex; flex-direction:column; gap:8px;}
+  .field label{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--ink-faint);
+  }
+  .field input, .field select, .field textarea{
+    background:var(--panel);
+    border:1px solid var(--line-strong);
+    border-radius:var(--radius);
+    padding:13px 14px;
+    font-family:'Inter',sans-serif; font-size:14.5px; color:var(--ink);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:2px solid var(--accent); outline-offset:1px; border-color:var(--accent);
+  }
+  .field textarea{resize:vertical; min-height:100px;}
+  .field-file{
+    border:1px dashed var(--line-strong); padding:16px; text-align:center;
+    font-size:13px; color:var(--ink-faint);
+  }
+  .consent{display:flex; align-items:flex-start; gap:10px; font-size:12.5px; color:var(--ink-soft);}
+  .consent input{margin-top:3px;}
+  .form-msg{
+    display:none; padding:16px 18px; background:var(--panel); border-left:2px solid var(--accent);
+    font-size:14.5px;
+  }
+  .form-msg.show{display:block;}
+
+  @media (max-width:900px){
+    .contact-grid{grid-template-columns:1fr;}
+    .form-row{grid-template-columns:1fr;}
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--line-strong);
+    padding:40px 0;
+  }
+  .footer-inner{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+  }
+  .footer-links{display:flex; gap:22px; flex-wrap:wrap; font-size:13px; color:var(--ink-soft);}
+  .footer-links a:hover{color:var(--accent);}
+  .footer-meta{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-faint);}
+
+  /* ---------- MODAL (case detail) ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(23,20,16,0.55);
+    display:none;
+    align-items:flex-start; justify-content:center;
+    padding:40px 20px;
+    overflow-y:auto;
+    backdrop-filter:blur(3px);
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:var(--bg);
+    max-width:920px; width:100%;
+    border-radius:var(--radius);
+    position:relative;
+    animation:modalIn .35s var(--ease);
+  }
+  @keyframes modalIn{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);}}
+  .modal-cover{
+    aspect-ratio:16/8;
+    border-radius:var(--radius) var(--radius) 0 0;
+    position:relative;
+    overflow:hidden;
+  }
+  .modal-close{
+    position:absolute; top:18px; right:18px;
+    width:38px; height:38px; border-radius:50%;
+    background:rgba(23,20,16,0.7); color:var(--bg);
+    border:none; font-size:18px; display:flex; align-items:center; justify-content:center;
+    z-index:5;
+  }
+  .modal-body{padding:44px;}
+  .modal-body .cat{
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--accent);
+  }
+  .modal-body h2{font-size:clamp(26px,4vw,36px); margin-top:12px;}
+  .modal-body .client{color:var(--ink-soft); margin-top:6px; font-size:14.5px;}
+  .modal-grid{
+    margin-top:36px; display:grid; grid-template-columns:1fr 1fr; gap:30px;
+  }
+  .modal-grid h4{
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; text-transform:uppercase;
+    letter-spacing:0.05em; color:var(--ink-faint); margin-bottom:10px;
+  }
+  .modal-grid p{font-size:14.5px; color:var(--ink-soft); line-height:1.65;}
+  .modal-what li{
+    font-size:14px; color:var(--ink-soft); padding:5px 0 5px 14px; position:relative;
+  }
+  .modal-what li::before{content:"—"; position:absolute; left:0; color:var(--ink-faint);}
+  .modal-gallery{
+    margin-top:36px; display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+  }
+  .modal-gallery .ph{
+    aspect-ratio:3/4; border-radius:2px;
+    background:linear-gradient(160deg,#2b2723,#171410);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono',monospace; font-size:10.5px;
+    color:rgba(233,230,223,0.4); text-align:center; padding:8px;
+  }
+  .modal-footer{
+    margin-top:40px; padding-top:30px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+  }
+  @media (max-width:700px){
+    .modal-body{padding:28px 22px;}
+    .modal-grid{grid-template-columns:1fr;}
+    .modal-gallery{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="wrap nav-inner">
+    <a href="#top" class="logo">Луиза <span>AI Creator</span></a>
+    <nav class="main-links">
+      <a href="#cases">Кейсы</a>
+      <a href="#services">Услуги</a>
+      <a href="#about">Обо мне</a>
+      <a href="#process">Процесс работы</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <a href="#apply" class="btn btn-solid desktop-only">Обсудить проект</a>
+    <button class="burger" id="burgerBtn" aria-label="Открыть меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#cases">Кейсы</a>
+    <a href="#services">Услуги</a>
+    <a href="#about">Обо мне</a>
+    <a href="#process">Процесс работы</a>
+    <a href="#contacts">Контакты</a>
+    <a href="#apply" class="btn btn-solid">Обсудить проект</a>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="top" class="wrap hero">
+  <div>
+    <div class="hero-name">Луиза — AI-креатор и специалист по визуальному контенту</div>
+    <h1>Создаю AI‑контент,<br>который помогает <em>брендам</em><br>выглядеть заметнее</h1>
+    <p>Рекламные ролики, виртуальные модели, визуальные концепции, каталожные съёмки и контент для социальных сетей — от идеи до готового результата.</p>
+    <div class="hero-ctas">
+      <a href="#cases" class="btn btn-solid">Смотреть кейсы</a>
+      <a href="#apply" class="btn btn-outline">Обсудить проект</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="reel-mark">L</div>
+    <div class="frame-label">Showreel — заменить на видео</div>
+    <div class="reel-caption"><span>Aqua Village / Old House</span><span>2026</span></div>
+  </div>
+</section>
+
+<!-- ============ POSITIONING ============ -->
+<section class="positioning">
+  <div class="wrap">
+    <div class="positioning-head">
+      <div>
+        <div class="eyebrow">Позиционирование</div>
+        <h2 style="margin-top:16px;">Не просто генерация изображений</h2>
+      </div>
+      <p>Я соединяю возможности искусственного интеллекта с маркетингом, визуальной концепцией и задачами бизнеса. Каждый проект начинается не с промпта, а с понимания продукта, аудитории и результата, который должен получить клиент.</p>
+    </div>
+    <div class="adv-grid">
+      <div class="adv-card">
+        <div class="num">01</div>
+        <h3>Маркетинговый подход</h3>
+        <p>Контент создаётся под конкретную задачу бренда, продукта или рекламной кампании.</p>
+      </div>
+      <div class="adv-card">
+        <div class="num">02</div>
+        <h3>Полный цикл</h3>
+        <p>От идеи и визуальной концепции до генерации, доработки и подготовки готовых материалов.</p>
+      </div>
+      <div class="adv-card">
+        <div class="num">03</div>
+        <h3>Современный визуальный уровень</h3>
+        <p>AI позволяет создавать рекламные материалы, съёмки и ролики без классического дорогостоящего продакшена.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section id="services" class="wrap section-pad">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Направления работы</div>
+      <h2 style="margin-top:16px;">Услуги</h2>
+    </div>
+    <p class="sub">Шесть направлений — от рекламных роликов до редизайна существующих материалов.</p>
+  </div>
+  <div class="services-grid">
+
+    <div class="service-card">
+      <div class="tag">01 / Реклама</div>
+      <h3>AI‑реклама и рекламные ролики</h3>
+      <ul>
+        <li>Разработка идеи</li>
+        <li>Визуальная концепция</li>
+        <li>Сценарий и раскадровка</li>
+        <li>Генерация кадров, монтаж</li>
+        <li>Адаптация под соцсети и экраны</li>
+      </ul>
+      <a href="#apply" class="link">Обсудить задачу</a>
+    </div>
+
+    <div class="service-card">
+      <div class="tag">02 / Персонажи</div>
+      <h3>Виртуальные модели и персонажи</h3>
+      <ul>
+        <li>Разработка уникальной AI‑модели</li>
+        <li>Фиксация внешности и характера</li>
+        <li>Паспорт персонажа</li>
+        <li>Разные эмоции, позы, образы</li>
+      </ul>
+      <a href="#apply" class="link">Посмотреть примеры</a>
+    </div>
+
+    <div class="service-card">
+      <div class="tag">03 / Съёмка</div>
+      <h3>AI‑съёмки для брендов</h3>
+      <ul>
+        <li>Каталожные изображения</li>
+        <li>Рекламные фотосессии</li>
+        <li>Визуализация одежды и продукта</li>
+        <li>Серия материалов в едином стиле</li>
+      </ul>
+      <a href="#apply" class="link">Посмотреть примеры</a>
+    </div>
+
+    <div class="service-card">
+      <div class="tag">04 / Соцсети</div>
+      <h3>Контент для социальных сетей</h3>
+      <ul>
+        <li>Изображения для публикаций</li>
+        <li>Рекламные креативы</li>
+        <li>Reels и короткие ролики</li>
+        <li>Визуальное направление аккаунта</li>
+      </ul>
+      <a href="#apply" class="link">Обсудить задачу</a>
+    </div>
+
+    <div class="service-card">
+      <div class="tag">05 / Концепция</div>
+      <h3>Визуальные концепции</h3>
+      <ul>
+        <li>Идея рекламной кампании</li>
+        <li>Мудборды и стилистика</li>
+        <li>Раскадровка</li>
+        <li>Визуальный образ бренда</li>
+      </ul>
+      <a href="#apply" class="link">Обсудить задачу</a>
+    </div>
+
+    <div class="service-card">
+      <div class="tag">06 / Редизайн</div>
+      <h3>Редизайн и доработка материалов</h3>
+      <ul>
+        <li>Обновление рекламных афиш</li>
+        <li>Улучшение существующего дизайна</li>
+        <li>Повышение качества изображений</li>
+        <li>Подготовка к печати или диджитал</li>
+      </ul>
+      <a href="#apply" class="link">Посмотреть примеры</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ CASES (signature — index) ============ -->
+<section id="cases" class="cases section-pad">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Портфолио</div>
+        <h2 style="margin-top:16px;">Избранные кейсы</h2>
+      </div>
+      <p class="sub">Нажмите на проект, чтобы открыть карточку кейса — задачу, решение и результат.</p>
+    </div>
+
+    <div class="case-list" id="caseList"><!-- filled by JS from data below --></div>
+
+    <div class="experimental-note">
+      <strong>Экспериментальные проекты</strong>
+      <span>Личные творческие работы, тесты новых инструментов и визуальные эксперименты — раздел для будущего пополнения.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="wrap section-pad">
+  <div class="about">
+    <div class="about-photo">
+      <div class="cap">Фото — заменить на профессиональный портрет</div>
+    </div>
+    <div class="about-text">
+      <div class="eyebrow">Обо мне</div>
+      <h2 style="margin:16px 0 24px; font-size:clamp(26px,3.2vw,36px); max-width:520px;">За красивым визуалом должна стоять идея</h2>
+      <p>Я AI‑креатор с опытом в маркетинге, SMM и предпринимательстве. До работы с нейросетями я развивала собственный продуктовый бизнес: занималась производством, продажами через социальные сети, продвижением и созданием контента. Этот опыт помог мне понять, как бизнес выглядит изнутри и что предпринимателю нужен не просто красивый материал, а инструмент, который помогает привлекать внимание и продавать.</p>
+      <p>Позже я работала с продвижением других проектов и брендов, а сегодня использую искусственный интеллект как новый инструмент для создания рекламы, визуальных концепций, виртуальных моделей и контента.</p>
+      <p>В своей работе я соединяю маркетинговое мышление, визуальную насмотренность и возможности современных AI‑инструментов.</p>
+      <div class="about-facts">
+        <span>Образование в маркетинге</span>
+        <span>Опыт в SMM</span>
+        <span>Собственный бизнес</span>
+        <span>Коммерческие проекты</span>
+        <span>AI‑визуал и видео</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <h4>Понимаю задачи бизнеса</h4>
+      <p>Собственный предпринимательский опыт и опыт работы с маркетингом.</p>
+    </div>
+    <div class="why-card">
+      <h4>Разрабатываю идею, а не только изображение</h4>
+      <p>Проект начинается с концепции, а не с выбора нейросети.</p>
+    </div>
+    <div class="why-card">
+      <h4>Работаю комплексно</h4>
+      <p>Идея, визуал, видео, персонажи, промпты и итоговые материалы.</p>
+    </div>
+    <div class="why-card">
+      <h4>Сохраняю единый стиль</h4>
+      <p>Все материалы проекта выглядят частью одного бренда.</p>
+    </div>
+    <div class="why-card">
+      <h4>Использую несколько AI‑инструментов</h4>
+      <p>Для каждого этапа — свой инструмент, а не одна универсальная нейросеть.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section id="process" class="process section-pad">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Как проходит работа</div>
+        <h2 style="margin-top:16px;">Процесс работы</h2>
+      </div>
+    </div>
+    <div class="process-list">
+      <div class="process-item">
+        <div class="step">01</div>
+        <div><h3>Знакомство с задачей</h3><p>Клиент рассказывает о проекте, продукте, аудитории, формате и целях.</p></div>
+      </div>
+      <div class="process-item">
+        <div class="step">02</div>
+        <div><h3>Бриф и сбор материалов</h3><p>Получаю фотографии, фирменный стиль, описание продукта, референсы и технические требования.</p></div>
+      </div>
+      <div class="process-item">
+        <div class="step">03</div>
+        <div><h3>Концепция</h3><p>Предлагаю визуальное направление, стилистику и идею проекта.</p></div>
+      </div>
+      <div class="process-item">
+        <div class="step">04</div>
+        <div><h3>Создание материалов</h3><p>Генерирую изображения или видео, собираю композиции и дорабатываю детали.</p></div>
+      </div>
+      <div class="process-item">
+        <div class="step">05</div>
+        <div><h3>Согласование</h3><p>Показываю промежуточный или итоговый вариант, вношу согласованные корректировки.</p></div>
+      </div>
+      <div class="process-item">
+        <div class="step">06</div>
+        <div><h3>Передача результата</h3><p>Клиент получает готовые материалы в необходимых форматах и размерах.</p></div>
+      </div>
+    </div>
+    <p class="process-note">Сроки и количество правок определяются отдельно для каждого проекта и фиксируются до начала работы.</p>
+  </div>
+</section>
+
+<!-- ============ FORMATS ============ -->
+<section class="wrap section-pad">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Сотрудничество</div>
+      <h2 style="margin-top:16px;">Форматы работы</h2>
+    </div>
+  </div>
+  <div class="formats-grid">
+    <div class="format-card">
+      <h3>Разовый проект</h3>
+      <p>Для создания одного ролика, рекламного визуала, персонажа, афиши или отдельной AI‑съёмки.</p>
+    </div>
+    <div class="format-card">
+      <h3>Комплексный проект</h3>
+      <p>Для разработки идеи и серии материалов под запуск, рекламную кампанию или каталог.</p>
+    </div>
+    <div class="format-card">
+      <h3>Регулярное сотрудничество</h3>
+      <p>Для брендов, которым постоянно нужен AI‑контент для социальных сетей, рекламы и специальных проектов.</p>
+    </div>
+  </div>
+  <div class="formats-cta"><a href="#apply" class="btn btn-outline">Получить расчёт проекта</a></div>
+</section>
+
+<!-- ============ TESTIMONIALS (hidden until real reviews exist) ============ -->
+<section class="testimonials wrap section-pad">
+  <!-- Раскрыть блок, когда появятся первые отзывы клиентов: имя, компания, фото/лого, текст, ссылка на кейс -->
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="wrap section-pad">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Вопросы</div>
+      <h2 style="margin-top:16px;">FAQ</h2>
+    </div>
+  </div>
+  <div class="faq-list" id="faqList">
+    <div class="faq-item">
+      <button class="faq-q"><h3>Что нужно предоставить для начала работы?</h3><span class="plus">+</span></button>
+      <div class="faq-a"><p>Описание задачи, информацию о продукте, фотографии, фирменный стиль и примеры того, что нравится.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q"><h3>Можно ли создать AI‑контент без готовых фотографий?</h3><span class="plus">+</span></button>
+      <div class="faq-a"><p>Да, формат работы зависит от проекта. Для некоторых задач контент можно создать полностью с нуля.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q"><h3>Сохраняется ли внешность виртуальной модели?</h3><span class="plus">+</span></button>
+      <div class="faq-a"><p>Да. Для персонажа разрабатывается постоянная идентичность и паспорт модели, который используется в дальнейшей работе.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q"><h3>Можно ли внести изменения в готовую работу?</h3><span class="plus">+</span></button>
+      <div class="faq-a"><p>Количество включённых корректировок заранее обсуждается и фиксируется перед началом проекта.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q"><h3>Можно ли подготовить контент сразу для нескольких площадок?</h3><span class="plus">+</span></button>
+      <div class="faq-a"><p>Да. Материалы можно адаптировать под сайт, социальные сети, маркетплейсы, рекламные экраны и печать.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q"><h3>Сколько времени занимает работа?</h3><span class="plus">+</span></button>
+      <div class="faq-a"><p>Срок зависит от сложности, количества материалов и формата проекта. Сроки определяются после обсуждения задачи.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q"><h3>Работаете ли вы только с готовой идеей клиента?</h3><span class="plus">+</span></button>
+      <div class="faq-a"><p>Нет. Можно прийти как с готовой концепцией, так и только с задачей. В таком случае идея и визуальное направление разрабатываются с нуля.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="final-cta">
+  <div class="wrap">
+    <h2>Есть задача, которую хочется реализовать с помощью AI?</h2>
+    <p>Расскажите о проекте, продукте или идее. Я предложу подходящий формат работы и помогу превратить задачу в готовый визуальный результат.</p>
+    <div class="final-links">
+      <a href="#apply" class="btn btn-solid">Обсудить проект</a>
+      <a href="https://t.me/" class="btn btn-outline">Telegram</a>
+      <a href="https://wa.me/" class="btn btn-outline">WhatsApp</a>
+      <a href="mailto:hello@louisa-ai.com" class="btn btn-outline">Email</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACTS + FORM ============ -->
+<section id="contacts" class="wrap section-pad">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="eyebrow">Контакты</div>
+      <h2 style="margin-top:16px;">Открыта к новым проектам</h2>
+      <div class="name-role">
+        <div class="n">Луиза</div>
+        <div class="r">AI‑креатор и специалист по визуальному контенту · работаю онлайн</div>
+      </div>
+      <ul class="contact-list">
+        <li><span>Телефон</span><span>+7 000 000-00-00</span></li>
+        <li><span>Email</span><span>hello@louisa-ai.com</span></li>
+        <li><span>Telegram</span><span>@louisa_ai</span></li>
+        <li><span>WhatsApp</span><span>+7 000 000-00-00</span></li>
+        <li><span>Instagram</span><span>@louisa.ai</span></li>
+        <li><span>Портфолио</span><span>behance.net/louisa</span></li>
+      </ul>
+      <div class="contact-tagline">Открыта к коммерческим проектам, долгосрочному сотрудничеству и работе с креативными командами.</div>
+    </div>
+
+    <div>
+      <form class="apply" id="applyForm" aria-label="Форма заявки">
+        <div class="form-row">
+          <div class="field">
+            <label for="f-name">Имя</label>
+            <input id="f-name" type="text" required>
+          </div>
+          <div class="field">
+            <label for="f-contact">Способ связи</label>
+            <input id="f-contact" type="text" placeholder="Telegram, email или телефон" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="f-company">Компания или проект</label>
+            <input id="f-company" type="text">
+          </div>
+          <div class="field">
+            <label for="f-service">Какая услуга нужна</label>
+            <select id="f-service">
+              <option>AI‑реклама и рекламные ролики</option>
+              <option>Виртуальные модели и персонажи</option>
+              <option>AI‑съёмки для брендов</option>
+              <option>Контент для социальных сетей</option>
+              <option>Визуальные концепции</option>
+              <option>Редизайн и доработка материалов</option>
+              <option>Ещё не знаю, нужна консультация</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-desc">Краткое описание задачи</label>
+          <textarea id="f-desc" required></textarea>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="f-timeline">Предполагаемые сроки</label>
+            <input id="f-timeline" type="text">
+          </div>
+          <div class="field">
+            <label for="f-budget">Бюджет или диапазон</label>
+            <input id="f-budget" type="text">
+          </div>
+        </div>
+        <div class="field">
+          <label>Файл (референс, бриф, фото)</label>
+          <div class="field-file">Перетащите файл сюда или нажмите, чтобы выбрать — интеграция загрузки настраивается на бэкенде</div>
+        </div>
+        <label class="consent">
+          <input type="checkbox" required>
+          <span>Согласен(на) на обработку персональных данных в соответствии с политикой конфиденциальности.</span>
+        </label>
+        <button type="submit" class="btn btn-accent" style="align-self:flex-start;">Отправить заявку</button>
+        <div class="form-msg" id="formMsg">Спасибо! Ваша заявка отправлена. Я свяжусь с вами для обсуждения проекта.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap footer-inner">
+    <div class="footer-meta">Луиза · AI Creator · © 2026</div>
+    <div class="footer-links">
+      <a href="#cases">Кейсы</a>
+      <a href="#services">Услуги</a>
+      <a href="#about">Обо мне</a>
+      <a href="#contacts">Контакты</a>
+      <a href="#">Политика конфиденциальности</a>
+      <a href="#">Согласие на обработку данных</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+/* ---------------- DATA: cases ---------------- */
+/* Замените cover (градиент) на реальные обложки, gallery — на реальные изображения/видео проектов */
+const CASES = [
+  {
+    idx:"01",
+    title:"Aqua Village / Old House",
+    client:"Летний комплекс",
+    cat:"AI‑реклама",
+    cover:"linear-gradient(155deg,#3B6E8C,#17313D)",
+    task:"Нужны были рекламные материалы для летнего комплекса, способные работать на LED‑экранах и в коротком формате без звука.",
+    solution:"Разработана семейная рекламная концепция с центральным образом жёлтой уточки — узнаваемым и лёгким для восприятия за секунды.",
+    what:["Рекламные концепции","Ролики для LED‑экранов","Идея с жёлтой уточкой","Адаптация под короткий формат без звука"],
+    result:"Подготовлены материалы для рекламы, адаптированные под несколько площадок размещения."
+  },
+  {
+    idx:"02",
+    title:"Детский бренд одежды",
+    client:"AI‑каталог",
+    cat:"Виртуальные модели",
+    cover:"linear-gradient(155deg,#8C6E3B,#3D2E17)",
+    task:"Бренду требовались постоянные модели для каталога без организации традиционных фотосъёмок с детьми.",
+    solution:"Созданы виртуальные модели с фиксированной внешностью, паспортом персонажа и набором эмоций, поз и образов.",
+    what:["Постоянные виртуальные модели","Паспорта моделей","Каталожные изображения","Визуализация одежды на моделях"],
+    result:"Разработана постоянная виртуальная модель, сокращена необходимость в классической фотосъёмке."
+  },
+  {
+    idx:"03",
+    title:"Театральная афиша",
+    client:"Театр",
+    cat:"Редизайн",
+    cover:"linear-gradient(155deg,#6E3B6E,#2E1730)",
+    task:"Требовалось обновить существующую афишу спектакля, сохранив узнаваемость и лица актёров.",
+    solution:"Проведена работа с композицией, заменены отдельные элементы одежды и фона при полном сохранении портретного сходства.",
+    what:["Исходная и обновлённая версия","Работа с композицией","Сохранение лиц актёров","Подготовка для печати"],
+    result:"Материал подготовлен к печати с повышенным качеством изображения."
+  },
+  {
+    idx:"04",
+    title:"Недвижимость",
+    client:"Девелопер",
+    cat:"AI‑визуализация",
+    cover:"linear-gradient(155deg,#3B8C6E,#173D2E)",
+    task:"Нужно было показать будущим покупателям, как будет выглядеть готовый интерьер помещения в состоянии white box.",
+    solution:"Разработан эмоциональный образ будущего жилья на основе исходных фотографий пустого помещения.",
+    what:["White box → готовый интерьер","Эмоциональный образ жилья","Материалы для продвижения объекта"],
+    result:"Материалы использованы для продвижения объекта в рекламных каналах."
+  },
+  {
+    idx:"05",
+    title:"Косметология",
+    client:"Клиника",
+    cat:"Соцсети",
+    cover:"linear-gradient(155deg,#8C3B5E,#3D1724)",
+    task:"Клинике требовался премиальный визуальный контент для регулярных публикаций в социальных сетях.",
+    solution:"Выстроена визуальная концепция публикаций с акцентом на премиальную эстетику бренда.",
+    what:["Рекламные изображения","Визуальные концепции","Контент для публикаций","Премиальная эстетика"],
+    result:"Создана единая визуальная система для публикаций бренда."
+  },
+  {
+    idx:"06",
+    title:"«Маковые булки»",
+    client:"Пищевой бренд",
+    cat:"Брендинг",
+    cover:"linear-gradient(155deg,#8C6E3B,#3D2E17)",
+    task:"Бренду требовался рекламный визуал и контент для социальных сетей в единой стилистике.",
+    solution:"Проведена работа с продуктовой съёмкой и выстроена стилистика бренда для дальнейшего использования.",
+    what:["Рекламные визуалы","Работа с продуктом","Стилистика бренда","Контент для соцсетей"],
+    result:"Контент адаптирован под несколько площадок размещения."
+  }
+];
+
+/* ---------------- Render case index ---------------- */
+const caseList = document.getElementById('caseList');
+CASES.forEach((c, i) => {
+  const row = document.createElement('div');
+  row.className = 'case-row';
+  row.innerHTML = `
+    <div class="idx">${c.idx}</div>
+    <h3>${c.title}</h3>
+    <div class="client">${c.client}</div>
+    <div class="cat">${c.cat}</div>
+    <div class="open">Смотреть кейс</div>
+    <div class="case-cover-preview" style="background:${c.cover}"></div>
+  `;
+  row.addEventListener('click', () => openCase(i));
+  caseList.appendChild(row);
+});
+
+/* ---------------- Modal ---------------- */
+const overlay = document.getElementById('modalOverlay');
+const modalContent = document.getElementById('modalContent');
+
+function openCase(i){
+  const c = CASES[i];
+  modalContent.innerHTML = `
+    <div class="modal-cover" style="background:${c.cover}">
+      <button class="modal-close" id="modalCloseBtn" aria-label="Закрыть">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="cat">${c.cat}</div>
+      <h2>${c.title}</h2>
+      <div class="client">${c.client}</div>
+      <div class="modal-grid">
+        <div><h4>Задача</h4><p>${c.task}</p></div>
+        <div><h4>Решение</h4><p>${c.solution}</p></div>
+      </div>
+      <div class="modal-grid" style="margin-top:24px;">
+        <div>
+          <h4>Что было создано</h4>
+          <ul class="modal-what">${c.what.map(w=>`<li>${w}</li>`).join('')}</ul>
+        </div>
+        <div><h4>Результат</h4><p>${c.result}</p></div>
+      </div>
+      <h4 style="margin-top:36px;">Галерея — до / после, процесс, итоговый материал</h4>
+      <div class="modal-gallery">
+        <div class="ph">Референсы / мудборд</div>
+        <div class="ph">Черновой вариант</div>
+        <div class="ph">Итоговый материал</div>
+      </div>
+      <div class="modal-footer">
+        <div style="font-size:13.5px; color:var(--ink-soft);">Кейс ${c.idx} из ${CASES.length}</div>
+        <a href="#apply" class="btn btn-solid" id="modalCta">Хочу похожий проект</a>
+      </div>
+    </div>
+  `;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('modalCloseBtn').addEventListener('click', closeCase);
+  document.getElementById('modalCta').addEventListener('click', closeCase);
+}
+function closeCase(){
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+overlay.addEventListener('click', (e)=>{ if(e.target === overlay) closeCase(); });
+document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeCase(); });
+
+/* ---------------- Mobile menu ---------------- */
+const burgerBtn = document.getElementById('burgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+burgerBtn.addEventListener('click', ()=>{
+  mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click', ()=> mobileMenu.classList.remove('open'));
+});
+
+/* ---------------- FAQ accordion ---------------- */
+document.querySelectorAll('.faq-item').forEach(item=>{
+  const q = item.querySelector('.faq-q');
+  const a = item.querySelector('.faq-a');
+  q.addEventListener('click', ()=>{
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(other=>{
+      other.classList.remove('open');
+      other.querySelector('.faq-a').style.maxHeight = null;
+    });
+    if(!isOpen){
+      item.classList.add('open');
+      a.style.maxHeight = a.scrollHeight + 'px';
+    }
+  });
+});
+
+/* ---------------- Form submit ---------------- */
+document.getElementById('applyForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  document.getElementById('formMsg').classList.add('show');
+  /* Реальная отправка формы (на email/Telegram) настраивается на бэкенде при подключении домена */
+});
+</script>
+
+</body>
+</html>
